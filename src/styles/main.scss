@@ -5,5 +5,13 @@
 // Ex: background-image: url(/* @echo SRC_PATH*//img/sample.jpg)
 
 #fepe_bicycle_container {
+  .heading {
+    margin-bottom: 5px;
 
+    h4 {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0 0 10px 0;
+    }
+  }
 }

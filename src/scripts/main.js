@@ -3,19 +3,50 @@
 // Any resources from this project should be referenced using SRC_PATH preprocessor var
 // Ex: let myImage = '/*@echo SRC_PATH*//img/sample.jpg';
 
-$(function () {
-  if (window['CotApp']) { //the code in this 'if' block should be deleted for embedded apps
-    const app = new CotApp("fepe_bicycle",{
-      hasContentTop: false,
-      hasContentBottom: false,
-      hasContentRight: false,
-      hasContentLeft: false,
-      searchcontext: 'INTER'
-    });
+/* global $ RegistrationModel LoadingPageView ThankYouPageView RegistrationPageView */
 
-    app.setBreadcrumb([
-      {"name": "fepe_bicycle", "link": "#"}
-    ]).render();
+$(function () {
+  document.querySelector('h1').setAttribute('tabindex', 0);
+
+  const appModel = new RegistrationModel();
+  let appView = new LoadingPageView();
+
+  let willSetFocus = false;
+
+  function renderThankYouPage() {
+    const view = new ThankYouPageView({ model: appModel });
+    view.on('navigate', () => {
+      renderRegistrationPage();
+    });
+    return appView.swapWith(view).then(() => {
+      appView = view;
+      if (willSetFocus) {
+        document.querySelector('h1').focus();
+      } else {
+        willSetFocus = true;
+      }
+    });
   }
-  let container = $('#fepe_bicycle_container');
+
+  function renderRegistrationPage() {
+    const view = new RegistrationPageView({ model: appModel });
+    view.on('success', () => {
+      renderThankYouPage();
+    });
+    return appView.swapWith(view).then(() => {
+      appView = view;
+      if (willSetFocus) {
+        document.querySelector('h1').focus();
+      } else {
+        willSetFocus = true;
+      }
+    });
+  }
+
+  appView
+    .appendTo(document.getElementById('fepe_bicycle_container'))
+    .render()
+    .then(() => {
+      renderRegistrationPage();
+    });
 });

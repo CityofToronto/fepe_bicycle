@@ -5,17 +5,17 @@ See examples below in the boilerplate code
 -->
 
 <!-- cot-app:head -->
-  <!--@exec startBuildTagWithCacheBuster('styles/main.css')-->
-    <!-- core:css -->
-    <!-- endinject -->
-    <!-- place your application stylesheet references here: -->
-    <link rel="stylesheet" type="text/css" href="<!-- @echo SRC_PATH -->/styles/main.css">
-  <!-- endbuild -->
-  <!--@exec startBuildTagWithCacheBuster('styles/core_print.css', 'media="print"')-->
-    <!-- core_print:css -->
-    <!-- endinject -->
-    <!-- place any application print-only stylesheet references here -->
-  <!-- endbuild -->
+<!--@exec startBuildTagWithCacheBuster('styles/main.css')-->
+<!-- core:css -->
+<!-- endinject -->
+<!-- place your application stylesheet references here: -->
+<link rel="stylesheet" type="text/css" href="<!-- @echo SRC_PATH -->/styles/main.css">
+<!-- endbuild -->
+<!--@exec startBuildTagWithCacheBuster('styles/core_print.css', 'media="print"')-->
+<!-- core_print:css -->
+<!-- endinject -->
+<!-- place any application print-only stylesheet references here -->
+<!-- endbuild -->
 <!-- cot-app:head end-->
 
 <!-- cot-app:body -->
@@ -23,17 +23,27 @@ See examples below in the boilerplate code
 <!-- cot-app:body end-->
 
 <!-- cot-app:footer -->
-  <!--@exec startBuildTagWithCacheBuster('scripts/main.js')-->
-    <!-- core:js -->
-    <!-- endinject -->
-    <!-- place your application script references here: -->
-    <script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/main.js"></script>
-  <!-- endbuild -->
-  <!--@if ENV!='prod'-->
-  <script type="text/javascript">
-    console.log('fepe_bicycle running on <!--@echo ENV--> environment');
-    console.log('fepe_bicycle qa release: <!--@echo QA_RELEASE-->');
-    console.log('fepe_bicycle build: <!--@echo BUILD_ID-->');
-  </script>
-  <!--@endif-->
+<!--@exec startBuildTagWithCacheBuster('scripts/main.js')-->
+<!-- core:js -->
+<!-- endinject -->
+<!-- place your application script references here: -->
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/lib/base.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/lib/alert.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/lib/form.js"></script>
+
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/models/registration.js"></script>
+
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/views/loading_page.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/views/registration_page.js"></script>
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/views/thankyou_page.js"></script>
+
+<script type="text/javascript" src="<!-- @echo SRC_PATH -->/scripts/main.js"></script>
+<!-- endbuild -->
+<!--@if ENV!='prod'-->
+<script type="text/javascript">
+  console.log('fepe_bicycle running on <!--@echo ENV--> environment');
+  console.log('fepe_bicycle qa release: <!--@echo QA_RELEASE-->');
+  console.log('fepe_bicycle build: <!--@echo BUILD_ID-->');
+</script>
+<!--@endif-->
 <!-- cot-app:footer end-->
