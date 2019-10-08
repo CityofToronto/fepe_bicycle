@@ -86,7 +86,8 @@ const RegistrationFormView = FormView.extend({
                   { text: 'Bicycle Lockers' },
                   { text: 'Bicycle Stations' }
                 ],
-                className: 'col-sm-4',
+                className: 'col-xs-12 col-md-4',
+                required: true,
 
                 postRender({ field, model, view }) {
                   const handler = () => {
@@ -146,6 +147,7 @@ const RegistrationFormView = FormView.extend({
                   { text: 'OPTION 2' },
                   { text: 'OPTION 3' }
                 ],
+                required: true,
 
                 postRender({ field }) {
                   document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'lockers_group');
@@ -197,6 +199,7 @@ const RegistrationFormView = FormView.extend({
                   { text: 'OPTION 2' },
                   { text: 'OPTION 3' }
                 ],
+                required: true,
 
                 postRender({ field }) {
                   document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'stations_group');
@@ -244,15 +247,18 @@ const RegistrationFormView = FormView.extend({
             fields: [
               {
                 title: 'Make',
-                bindTo: 'bicycle_1_make'
+                bindTo: 'bicycle_1_make',
+                required: true
               },
               {
                 title: 'Model',
-                bindTo: 'bicycle_1_model'
+                bindTo: 'bicycle_1_model',
+                required: true
               },
               {
                 title: 'Colour',
-                bindTo: 'bicycle_1_colour'
+                bindTo: 'bicycle_1_colour',
+                required: true
               }
             ]
           },

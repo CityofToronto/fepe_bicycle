@@ -1,4 +1,4 @@
-/* global BaseModel */
+/* global BaseModel grecaptcha */
 
 /* exported RegistrationModel */
 const RegistrationModel = BaseModel.extend({
@@ -12,6 +12,7 @@ const RegistrationModel = BaseModel.extend({
     street_address: '1 Street Address Avenue',
     city: 'Toronto',
     province: 'Ontario',
+    postal_code: 'M4B 1B3'
   },
 
   adjustSyncJson(json) {
@@ -36,5 +37,25 @@ const RegistrationModel = BaseModel.extend({
     return json;
   },
 
-  urlRoot: '/* @echo C3DATA_REGISTRATION_URL */'
+  save(attributes, options = {}) {
+    return new Promise((resolve, reject) => {
+      grecaptcha.ready(() => {
+        grecaptcha.execute('/*@echo RECAPTCHA_SITEKEY*/').then((token) => {
+          options.headers = Object.assign({
+            'Content-Type': 'application/json',
+            'captchaResponseToken': token,
+            'cot_recaptcha_config': '/* @echo RECAPTCHA_REGISTRATION_CONFIG_TOKEN */'
+          }, options.headers);
+
+          BaseModel.prototype.save.call(this, attributes, options).then(resolve, reject);
+        });
+      });
+    })
+  },
+
+  parse(response, options) {
+    return BaseModel.prototype.parse.call(this, JSON.parse(response.body), options);
+  },
+
+  urlRoot: '/* @echo RECAPTCHA_API_URL */'
 });

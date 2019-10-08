@@ -9,10 +9,23 @@ core.embeddedApp.createTasks(gulp, {
   deploymentPath: '',
   preprocessorContext: {
     local: {
-      C3DATA_REGISTRATION_URL: 'https://config.cc.toronto.ca:49093/c3api_data/v2/DataAccess.svc/bicycle_parking/registrations'
+      RECAPTCHA_SITEKEY: "6LeN_XIUAAAAAEd8X21vFtkJ3_c7uA0xpUGcrGpe",
+      RECAPTCHA_API_URL: "https://was-intra-sit.toronto.ca/c3api_data/v2/DataAccess.svc/cot_dts_recaptcha/app_config/ca.toronto.api.dataaccess.odata4.verify",
+
+      RECAPTCHA_REGISTRATION_CONFIG_TOKEN: "387825d4-cdc2-4c50-9029-516a0eeb28f5",
     },
-    dev: {},
-    qa: {},
+    dev: {
+      RECAPTCHA_SITEKEY: "6LeN_XIUAAAAAEd8X21vFtkJ3_c7uA0xpUGcrGpe",
+      RECAPTCHA_API_URL: "https://was-intra-sit.toronto.ca/c3api_data/v2/DataAccess.svc/cot_dts_recaptcha/app_config/ca.toronto.api.dataaccess.odata4.verify",
+
+      RECAPTCHA_REGISTRATION_CONFIG_TOKEN: "387825d4-cdc2-4c50-9029-516a0eeb28f5",
+    },
+    qa: {
+      RECAPTCHA_SITEKEY: "6LeN_XIUAAAAAEd8X21vFtkJ3_c7uA0xpUGcrGpe",
+      RECAPTCHA_API_URL: "https://was-intra-sit.toronto.ca/c3api_data/v2/DataAccess.svc/cot_dts_recaptcha/app_config/ca.toronto.api.dataaccess.odata4.verify",
+
+      RECAPTCHA_REGISTRATION_CONFIG_TOKEN: "387825d4-cdc2-4c50-9029-516a0eeb28f5",
+    },
     prod: {}
   }
 });

@@ -3,7 +3,7 @@
 // Any resources from this project should be referenced using SRC_PATH preprocessor var
 // Ex: let myImage = '/*@echo SRC_PATH*//img/sample.jpg';
 
-/* global $ RegistrationModel LoadingPageView ThankYouPageView RegistrationPageView */
+/* global _ $ RegistrationModel LoadingPageView ThankYouPageView RegistrationPageView */
 
 $(function () {
   document.querySelector('h1').setAttribute('tabindex', 0);
@@ -16,6 +16,11 @@ $(function () {
   function renderThankYouPage() {
     const view = new ThankYouPageView({ model: appModel });
     view.on('navigate', () => {
+      appModel.clear();
+      const defaults = _.result(RegistrationModel.prototype, 'defaults');
+      if (defaults) {
+        appModel.set(defaults);
+      }
       renderRegistrationPage();
     });
     return appView.swapWith(view).then(() => {
