@@ -1,301 +1,590 @@
 /* global BaseView FormView */
 
 const RegistrationFormView = FormView.extend({
-  formDefinition: {
-    rootPath: '/* @echo SRC_PATH *//',
+  formDefinition: function () {
+    return {
+      rootPath: '/* @echo SRC_PATH *//',
 
-    sections: [
-      {
-        title: 'Contact Information',
+      sections: [
+        {
+          title: 'Contact Information',
 
-        rows: [
-          {
-            fields: [
-              {
-                title: 'First Name',
-                bindTo: 'first_name',
-                required: true
-              },
-              {
-                title: 'Last Name',
-                bindTo: 'last_name',
-                required: true
-              },
-              {
-                title: 'Title',
-                bindTo: 'title'
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                title: 'Email',
-                bindTo: 'email'
-              },
-              {
-                title: 'Primary Phone',
-                type: 'phone',
-                bindTo: 'primary_phone'
-              },
-              {
-                title: 'Alternate Phone',
-                type: 'phone',
-                bindTo: 'alternate_phone'
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                title: 'Street Address',
-                bindTo: 'street_address'
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                title: 'City',
-                bindTo: 'city'
-              },
-              {
-                title: 'Province',
-                bindTo: 'province'
-              },
-              {
-                title: 'Postal Code',
-                bindTo: 'postal_code',
-                validationtype: 'PostalCode'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        title: 'Request Details',
+          rows: [
+            {
+              fields: [
+                {
+                  title: 'First Name',
+                  bindTo: 'first_name',
+                  required: true
+                },
+                {
+                  title: 'Last Name',
+                  bindTo: 'last_name',
+                  required: true
+                },
+                {
+                  title: 'Title',
+                  bindTo: 'title'
+                }
+              ]
+            },
+            {
+              fields: [
+                {
+                  title: 'Email',
+                  type: 'email',
+                  bindTo: 'email',
+                  id: 'email',
 
-        rows: [
-          {
-            fields: [
-              {
-                title: 'Type',
-                type: 'dropdown',
-                bindTo: 'type',
-                choices: [
-                  { text: 'Bicycle Lockers' },
-                  { text: 'Bicycle Stations' }
-                ],
-                className: 'col-xs-12 col-md-4',
-                required: true,
+                  validators: {
+                    callback: {
+                      callback: (input) => {
+                        if (!this.disableCallbackChaining) {
+                          this.disableCallbackChaining = true;
+                          this.formValidator.revalidateField('primary_phone');
+                          this.formValidator.revalidateField('alternate_phone');
+                          this.disableCallbackChaining = false;
+                        }
 
-                postRender({ field, model, view }) {
-                  const handler = () => {
-                    const value = model.get(field.bindTo);
+                        if (input == ''
+                          && this.el.querySelector('#primary_phone').value == ''
+                          && this.el.querySelector('#alternate_phone').value == '') {
 
-                    const lockers_group = view.el.querySelectorAll('.lockers_group');
-                    if (value === 'Bicycle Lockers') {
-                      for (let index = 0, length = lockers_group.length; index < length; index++) {
-                        lockers_group[index].classList.remove('hide');
-                      }
-                    } else {
-                      for (let index = 0, length = lockers_group.length; index < length; index++) {
-                        lockers_group[index].classList.add('hide');
-                      }
+                          return false;
+                        }
+
+                        return true;
+                      },
+                      message: 'Please include atleast 1 contact information.'
+                    },
+                    emailAddress: {
+                      message: 'The value is not a valid email address'
                     }
+                  },
+                },
+                {
+                  title: 'Primary Phone',
+                  type: 'phone',
+                  bindTo: 'primary_phone',
+                  id: 'primary_phone',
 
-                    const stations_group = view.el.querySelectorAll('.stations_group');
-                    if (value === 'Bicycle Stations') {
-                      for (let index = 0, length = stations_group.length; index < length; index++) {
-                        stations_group[index].classList.remove('hide');
-                      }
-                    } else {
-                      for (let index = 0, length = stations_group.length; index < length; index++) {
-                        stations_group[index].classList.add('hide');
-                      }
+                  validators: {
+                    callback: {
+                      callback: (input) => {
+                        if (!this.disableCallbackChaining) {
+                          this.disableCallbackChaining = true;
+                          this.formValidator.revalidateField('email');
+                          this.formValidator.revalidateField('alternate_phone');
+                          this.disableCallbackChaining = false;
+                        }
+
+                        if (input == ''
+                          && this.el.querySelector('#email').value == ''
+                          && this.el.querySelector('#alternate_phone').value == '') {
+
+                          return false;
+                        }
+
+                        return true;
+                      },
+                      message: 'Please include atleast 1 contact information.'
                     }
-                  };
+                  },
+                },
+                {
+                  title: 'Alternate Phone',
+                  type: 'phone',
+                  bindTo: 'alternate_phone',
+                  id: 'alternate_phone',
 
-                  model.on(`change:${field.bindTo}`, handler);
+                  validators: {
+                    callback: {
+                      callback: (input) => {
+                        if (!this.disableCallbackChaining) {
+                          this.disableCallbackChaining = true;
+                          this.formValidator.revalidateField('email');
+                          this.formValidator.revalidateField('primary_phone');
+                          this.disableCallbackChaining = false;
+                        }
 
-                  handler();
+                        if (input == ''
+                          && this.el.querySelector('#email').value == ''
+                          && this.el.querySelector('#primary_phone').value == '') {
+
+                          return false;
+                        }
+
+                        return true;
+                      },
+                      message: 'Please include atleast 1 contact information.'
+                    }
+                  },
                 }
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                type: 'html',
-                html: '<h4>Bicycle Lockers</h4>',
-                className: 'col-xs-12 heading',
-
-                postRender({ field }) {
-                  document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'lockers_group');
+              ]
+            },
+            {
+              fields: [
+                {
+                  title: 'Street Address',
+                  bindTo: 'street_address'
                 }
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                title: 'First Choice',
-                type: 'dropdown',
-                bindTo: 'lockers_choice_1',
-                choices: [
-                  { text: 'OPTION 1' },
-                  { text: 'OPTION 2' },
-                  { text: 'OPTION 3' }
-                ],
-                required: true,
-
-                postRender({ field }) {
-                  document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'lockers_group');
+              ]
+            },
+            {
+              fields: [
+                {
+                  title: 'City',
+                  bindTo: 'city'
+                },
+                {
+                  title: 'Province',
+                  bindTo: 'province'
+                },
+                {
+                  title: 'Postal Code',
+                  bindTo: 'postal_code',
+                  validationtype: 'PostalCode'
                 }
-              },
-              {
-                title: 'Second Choice',
-                type: 'dropdown',
-                bindTo: 'lockers_choice_2',
-                choices: [
-                  { text: 'OPTION 1' },
-                  { text: 'OPTION 2' },
-                  { text: 'OPTION 3' }
-                ]
-              },
-              {
-                title: 'Third Choice',
-                type: 'dropdown',
-                bindTo: 'lockers_choice_3',
-                choices: [
-                  { text: 'OPTION 1' },
-                  { text: 'OPTION 2' },
-                  { text: 'OPTION 3' }
-                ]
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                type: 'html',
-                html: '<h4>Bicycle Stations</h4>',
-                className: 'col-xs-12 heading',
+              ]
+            }
+          ]
+        },
+        {
+          title: 'Request Details',
 
-                postRender({ field }) {
-                  document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'stations_group');
+          rows: [
+            {
+              fields: [
+                {
+                  title: 'Type',
+                  type: 'dropdown',
+                  bindTo: 'type',
+                  choices: [
+                    { text: 'Bicycle Lockers' },
+                    { text: 'Bicycle Stations' }
+                  ],
+                  className: 'col-xs-12 col-md-4',
+                  required: true,
+
+                  postRender({ field, model, view }) {
+                    let lastValue = model.get(field.bindTo);
+
+                    const handler = () => {
+                      const value = model.get(field.bindTo);
+
+                      const lockers_group = view.el.querySelectorAll('.lockers_group');
+                      if (value === 'Bicycle Lockers') {
+                        for (let index = 0, length = lockers_group.length; index < length; index++) {
+                          lockers_group[index].classList.remove('hide');
+                        }
+                      } else {
+                        for (let index = 0, length = lockers_group.length; index < length; index++) {
+                          lockers_group[index].classList.add('hide');
+                        }
+                      }
+
+                      const stations_group = view.el.querySelectorAll('.stations_group');
+                      if (value === 'Bicycle Stations') {
+                        for (let index = 0, length = stations_group.length; index < length; index++) {
+                          stations_group[index].classList.remove('hide');
+                        }
+                      } else {
+                        for (let index = 0, length = stations_group.length; index < length; index++) {
+                          stations_group[index].classList.add('hide');
+                        }
+                      }
+
+                      let announcements = [];
+                      switch (lastValue) {
+                        case 'Bicycle Lockers':
+                          announcements.push('Bicycle lockers first choice field has been removed.');
+                          announcements.push('Bicycle lockers second choice field has been removed.');
+                          announcements.push('Bicycle lockers third choice field has been removed.');
+                          break;
+                        case 'Bicycle Stations':
+                          announcements.push('Bicycle stations first choice field has been removed.');
+                          announcements.push('Bicycle stations second choice field has been removed.');
+                          announcements.push('Bicycle stations third choice field has been removed.');
+                          announcements.push('Bicycle information section has been removed.');
+                          break;
+                      }
+                      lastValue = value;
+                      switch (value) {
+                        case 'Bicycle Lockers':
+                          announcements.push('Bicycle lockers first choice field has been added.');
+                          announcements.push('Bicycle lockers second choice field has been added.');
+                          announcements.push('Bicycle lockers third choice field has been added.');
+                          break;
+                        case 'Bicycle Stations':
+                          announcements.push('Bicycle stations first choice field has been added.');
+                          announcements.push('Bicycle stations second choice field has been added.');
+                          announcements.push('Bicycle stations third choice field has been added.');
+                          announcements.push('Bicycle information section has been added.');
+                      }
+                      document.querySelector('.js-aria-live').textContent = announcements.join(' ');
+                    };
+
+                    model.on(`change:${field.bindTo}`, handler);
+
+                    handler();
+                  }
                 }
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                title: 'First Choice',
-                type: 'dropdown',
-                bindTo: 'stations_choice_1',
-                choices: [
-                  { text: 'OPTION 1' },
-                  { text: 'OPTION 2' },
-                  { text: 'OPTION 3' }
-                ],
-                required: true,
+              ]
+            },
+            {
+              fields: [
+                {
+                  type: 'html',
+                  html: '<h4 id="bicycle_lockers">Bicycle Lockers</h4>',
+                  className: 'col-xs-12 heading',
 
-                postRender({ field }) {
-                  document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'stations_group');
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'lockers_group');
+                  }
                 }
-              },
-              {
-                title: 'Second Choice',
-                type: 'dropdown',
-                bindTo: 'stations_choice_2',
-                choices: [
-                  { text: 'OPTION 1' },
-                  { text: 'OPTION 2' },
-                  { text: 'OPTION 3' }
-                ]
-              },
-              {
-                title: 'Third Choice',
-                type: 'dropdown',
-                bindTo: 'stations_choice_3',
-                choices: [
-                  { text: 'OPTION 1' },
-                  { text: 'OPTION 2' },
-                  { text: 'OPTION 3' }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        title: 'Bicycle Information',
-        className: 'hide panel-default stations_group',
+              ]
+            },
+            {
+              fields: [
+                {
+                  title: 'First Choice',
+                  type: 'dropdown',
+                  bindTo: 'lockers_choice_1',
+                  id: 'lockers_choice_1',
+                  choices: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */',
+                  required: true,
 
-        rows: [
-          {
-            fields: [
-              {
-                type: 'html',
-                html: '<h4>First Bicycle</h4>',
-                className: 'col-xs-12 heading'
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                title: 'Make',
-                bindTo: 'bicycle_1_make',
-                required: true
-              },
-              {
-                title: 'Model',
-                bindTo: 'bicycle_1_model',
-                required: true
-              },
-              {
-                title: 'Colour',
-                bindTo: 'bicycle_1_colour',
-                required: true
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                type: 'html',
-                html: '<h4>Second Bicycle</h4>',
-                className: 'col-xs-12 heading'
-              }
-            ]
-          },
-          {
-            fields: [
-              {
-                title: 'Make',
-                bindTo: 'bicycle_2_make'
-              },
-              {
-                title: 'Model',
-                bindTo: 'bicycle_2_model'
-              },
-              {
-                title: 'Colour',
-                bindTo: 'bicycle_2_colour'
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                  validators: {
+                    callback: {
+                      callback: (input) => {
+                        if (!this.disableCallbackChaining) {
+                          this.disableCallbackChaining = true;
+                          this.formValidator.revalidateField('lockers_choice_2');
+                          this.formValidator.revalidateField('lockers_choice_3');
+                          this.disableCallbackChaining = false;
+                        }
+
+                        if (input === '') {
+                          return true;
+                        }
+
+                        if (input == this.el.querySelector('#lockers_choice_2').value
+                          || input == this.el.querySelector('#lockers_choice_3').value) {
+
+                          return false;
+                        }
+
+                        return true;
+                      },
+                      message: 'You cannot select the same choice.'
+                    }
+                  },
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'lockers_group');
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'bicycle_lockers');
+                  }
+                },
+                {
+                  title: 'Second Choice',
+                  type: 'dropdown',
+                  bindTo: 'lockers_choice_2',
+                  id: 'lockers_choice_2',
+                  choices: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */',
+
+                  validators: {
+                    callback: {
+                      callback: (input) => {
+                        if (!this.disableCallbackChaining) {
+                          this.disableCallbackChaining = true;
+                          this.formValidator.revalidateField('lockers_choice_1');
+                          this.formValidator.revalidateField('lockers_choice_3');
+                          this.disableCallbackChaining = false;
+                        }
+
+                        if (input === '') {
+                          return true;
+                        }
+
+                        if (input == this.el.querySelector('#lockers_choice_1').value
+                          || input == this.el.querySelector('#lockers_choice_3').value) {
+
+                          return false;
+                        }
+
+                        return true;
+                      },
+                      message: 'You cannot select the same choice.'
+                    }
+                  },
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'bicycle_lockers');
+                  }
+                },
+                {
+                  title: 'Third Choice',
+                  type: 'dropdown',
+                  bindTo: 'lockers_choice_3',
+                  id: 'lockers_choice_3',
+                  choices: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */',
+
+                  validators: {
+                    callback: {
+                      callback: (input) => {
+                        if (!this.disableCallbackChaining) {
+                          this.disableCallbackChaining = true;
+                          this.formValidator.revalidateField('lockers_choice_1');
+                          this.formValidator.revalidateField('lockers_choice_2');
+                          this.disableCallbackChaining = false;
+                        }
+
+                        if (input === '') {
+                          return true;
+                        }
+
+                        if (input == this.el.querySelector('#lockers_choice_1').value
+                          || input == this.el.querySelector('#lockers_choice_2').value) {
+
+                          return false;
+                        }
+
+                        return true;
+                      },
+                      message: 'You cannot select the same choice.'
+                    }
+                  },
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'bicycle_lockers');
+                  }
+                }
+              ]
+            },
+            {
+              fields: [
+                {
+                  type: 'html',
+                  html: '<h4 id="bicycle_stations">Bicycle Stations</h4>',
+                  className: 'col-xs-12 heading',
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'stations_group');
+                  }
+                }
+              ]
+            },
+            {
+              fields: [
+                {
+                  title: 'First Choice',
+                  type: 'dropdown',
+                  bindTo: 'stations_choice_1',
+                  id: 'stations_choice_1',
+                  choices: '/* @echo C3DATAMEDIA_STATION_CHOICES */',
+                  required: true,
+
+                  validators: {
+                    callback: {
+                      callback: (input) => {
+                        if (!this.disableCallbackChaining) {
+                          this.disableCallbackChaining = true;
+                          this.formValidator.revalidateField('stations_choice_2');
+                          this.formValidator.revalidateField('stations_choice_3');
+                          this.disableCallbackChaining = false;
+                        }
+
+                        if (input === '') {
+                          return true;
+                        }
+
+                        if (input == this.el.querySelector('#stations_choice_2').value
+                          || input == this.el.querySelector('#stations_choice_3').value) {
+
+                          return false;
+                        }
+
+                        return true;
+                      },
+                      message: 'You cannot select the same choice.'
+                    }
+                  },
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).parentNode.classList.add('hide', 'stations_group');
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'bicycle_stations');
+                  }
+                },
+                {
+                  title: 'Second Choice',
+                  type: 'dropdown',
+                  bindTo: 'stations_choice_2',
+                  id: 'stations_choice_2',
+                  choices: '/* @echo C3DATAMEDIA_STATION_CHOICES */',
+
+                  validators: {
+                    callback: {
+                      callback: (input) => {
+                        if (!this.disableCallbackChaining) {
+                          this.disableCallbackChaining = true;
+                          this.formValidator.revalidateField('stations_choice_1');
+                          this.formValidator.revalidateField('stations_choice_3');
+                          this.disableCallbackChaining = false;
+                        }
+
+                        if (input === '') {
+                          return true;
+                        }
+
+                        if (input == this.el.querySelector('#stations_choice_1').value
+                          || input == this.el.querySelector('#stations_choice_3').value) {
+
+                          return false;
+                        }
+
+                        return true;
+                      },
+                      message: 'You cannot select the same choice.'
+                    }
+                  },
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'bicycle_stations');
+                  }
+                },
+                {
+                  title: 'Third Choice',
+                  type: 'dropdown',
+                  bindTo: 'stations_choice_3',
+                  id: 'stations_choice_3',
+                  choices: '/* @echo C3DATAMEDIA_STATION_CHOICES */',
+
+                  validators: {
+                    callback: {
+                      callback: (input) => {
+                        if (!this.disableCallbackChaining) {
+                          this.disableCallbackChaining = true;
+                          this.formValidator.revalidateField('stations_choice_1');
+                          this.formValidator.revalidateField('stations_choice_2');
+                          this.disableCallbackChaining = false;
+                        }
+
+                        if (input === '') {
+                          return true;
+                        }
+
+                        if (input == this.el.querySelector('#stations_choice_1').value
+                          || input == this.el.querySelector('#stations_choice_2').value) {
+
+                          return false;
+                        }
+
+                        return true;
+                      },
+                      message: 'You cannot select the same choice.'
+                    }
+                  },
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'bicycle_stations');
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'Bicycle Information',
+          className: 'hide panel-default stations_group',
+
+          rows: [
+            {
+              fields: [
+                {
+                  type: 'html',
+                  html: '<h4 id="first_bicycle">First Bicycle</h4>',
+                  className: 'col-xs-12 heading'
+                }
+              ]
+            },
+            {
+              fields: [
+                {
+                  title: 'Make',
+                  bindTo: 'bicycle_1_make',
+                  required: true,
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'first_bicycle');
+                  }
+                },
+                {
+                  title: 'Model',
+                  bindTo: 'bicycle_1_model',
+                  required: true,
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'first_bicycle');
+                  }
+                },
+                {
+                  title: 'Colour',
+                  bindTo: 'bicycle_1_colour',
+                  required: true,
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'first_bicycle');
+                  }
+                }
+              ]
+            },
+            {
+              fields: [
+                {
+                  type: 'html',
+                  html: '<h4 id="second_bicycle">Second Bicycle</h4>',
+                  className: 'col-xs-12 heading'
+                }
+              ]
+            },
+            {
+              fields: [
+                {
+                  title: 'Make',
+                  bindTo: 'bicycle_2_make',
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'second_bicycle');
+                  }
+                },
+                {
+                  title: 'Model',
+                  bindTo: 'bicycle_2_model',
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'second_bicycle');
+                  }
+                },
+                {
+                  title: 'Colour',
+                  bindTo: 'bicycle_2_colour',
+
+                  postRender({ field }) {
+                    document.getElementById(`${field.id}Element`).querySelector('label').setAttribute('aria-labelledby', 'second_bicycle');
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   },
 
   render() {
     return FormView.prototype.render.call(this)
       .then(() => {
-        const buttonsElement = document.createElement('div');
+        const buttonsElement = document.createElement('p');
         buttonsElement.innerHTML = `
           <button class="btn btn-primary btn-lg">Register</button>
         `

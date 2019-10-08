@@ -12,8 +12,10 @@ const ThankYouPageView = BaseView.extend({
   render() {
     this.el.innerHTML = `
       <div class="row">
-        <div class="col-xs-12 col-md-10">
+        <div class="col-xs-12 col-md-12">
           <h2>Thank you for your registration</h2>
+
+          <p>This application form was successfully sent to the Administrator.</p>
 
           <table class="table table-bordered">
             <tbody>
@@ -57,7 +59,7 @@ const ThankYouPageView = BaseView.extend({
             </tbody>
           </table>
 
-          <p><button type="button" class="btn btn-primary btn-lg btn-done">Done</button></p>
+          <p><button type="button" class="btn btn-primary btn-lg btn-done">Submit Another Registration</button></p>
         </div>
       </div>
     `;

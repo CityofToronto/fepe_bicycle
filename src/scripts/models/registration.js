@@ -3,16 +3,16 @@
 /* exported RegistrationModel */
 const RegistrationModel = BaseModel.extend({
   defaults: {
-    first_name: 'FIRSTNAME',
-    last_name: 'LASTNAME',
-    title: 'MR',
-    email: 'FIRSTNAME.LASTNAME@toronto.ca',
-    primary_phone: '416-555-5555',
-    alternate_phone: '416-555-5555',
-    street_address: '1 Street Address Avenue',
-    city: 'Toronto',
-    province: 'Ontario',
-    postal_code: 'M4B 1B3'
+    // first_name: 'FIRSTNAME',
+    // last_name: 'LASTNAME',
+    // title: 'MR',
+    // email: 'FIRSTNAME.LASTNAME@toronto.ca',
+    // primary_phone: '416-555-5555',
+    // alternate_phone: '416-555-5555',
+    // street_address: '1 Street Address Avenue',
+    // city: 'Toronto',
+    // province: 'Ontario',
+    // postal_code: 'M4B 1B3'
   },
 
   adjustSyncJson(json) {
