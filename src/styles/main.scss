@@ -5,13 +5,35 @@
 // Ex: background-image: url(/* @echo SRC_PATH*//img/sample.jpg)
 
 #fepe_bicycle_container {
-  .heading {
-    margin-bottom: 5px;
+  .registrationForm {
+    .heading {
+      margin-bottom: 5px;
 
-    h4 {
-      font-size: 18px;
-      font-weight: bold;
-      margin: 0 0 10px 0;
+      h4 {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0 0 10px 0;
+      }
+    }
+
+    .has-feedback {
+      &.has-error,
+      &.has-success {
+        .intl-tel-input {
+          .flag-container {
+            right: 23px;
+          }
+        }
+      }
+    }
+  }
+
+  .thankYouPage {
+    .table {
+      th {
+        background-color: #eeeeee;
+        color: #000000;
+      }
     }
   }
 }
