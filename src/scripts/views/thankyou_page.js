@@ -26,7 +26,7 @@ const ThankYouPageView = BaseView.extend({
               <tr><td width="33%">First Name</td><td>${this.model.escape('first_name')}</td></tr>
               <tr><td>Last Name</td><td>${this.model.escape('last_name')}</td></tr>
               <tr><td>Title</td><td>${this.model.escape('title')}</td></tr>
-              <tr><td>Primary Phone Number</td><td>${this.model.escape('email')}</td></tr>
+              <tr><td>Email</td><td>${this.model.escape('email')}</td></tr>
               <tr><td>Primary Phone Number</td><td>${this.model.escape('primary_phone')}</td></tr>
               <tr><td>Alternate Phone Number</td><td>${this.model.escape('alternate_phone')}</td></tr>
               <tr><td>Address</td><td>${this.model.escape('street_address')}</td></tr>
