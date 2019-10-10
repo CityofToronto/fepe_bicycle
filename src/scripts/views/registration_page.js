@@ -1,6 +1,8 @@
-/* global BaseView FormView */
+/* global IEversion BaseView FormView */
 
 const RegistrationFormView = FormView.extend({
+  className: 'registrationForm',
+
   formDefinition: function () {
     return {
       rootPath: '/* @echo SRC_PATH *//',
@@ -70,7 +72,7 @@ const RegistrationFormView = FormView.extend({
 
                   validators: {
                     callback: {
-                      callback: (input) => {
+                      callback: (value, validator, $field) => {
                         if (!this.disableCallbackChaining) {
                           this.disableCallbackChaining = true;
                           this.formValidator.revalidateField('email');
@@ -78,16 +80,47 @@ const RegistrationFormView = FormView.extend({
                           this.disableCallbackChaining = false;
                         }
 
-                        if (input == ''
+                        if (value == ''
                           && this.el.querySelector('#email').value == ''
                           && this.el.querySelector('#alternate_phone').value == '') {
 
-                          return false;
+                          return {
+                            valid: false,
+                            message: 'Please include atleast 1 contact information.'
+                          };
                         }
 
-                        return true;
-                      },
-                      message: 'Please include atleast 1 contact information.'
+                        if (IEversion < 10) {
+                          if (value !== '') {
+                            if (value.match(/\d{3}-?\d{3}-?\d{4}/) && value.match(/\d{3}-?\d{3}-?\d{4}/)[0] == value) {
+                              $field.val(value.replace(/(\d{3})-?(\d{3})-?(\d{4})/, '$1-$2-$3'));
+                              return {
+                                valid: true
+                              };
+                            } else {
+                              return {
+                                valid: false,
+                                message: 'This field must be a valid phone number.'
+                              };
+                            }
+                          } else {
+                            return {
+                              valid: true
+                            };
+                          }
+                        } else {
+                          if (value === '' || $field.intlTelInput('isValidNumber')) {
+                            return {
+                              valid: true
+                            };
+                          } else {
+                            return {
+                              valid: false,
+                              message: 'This field must be a valid phone number.'
+                            };
+                          }
+                        }
+                      }
                     }
                   },
                 },
@@ -99,7 +132,7 @@ const RegistrationFormView = FormView.extend({
 
                   validators: {
                     callback: {
-                      callback: (input) => {
+                      callback: (value, validator, $field) => {
                         if (!this.disableCallbackChaining) {
                           this.disableCallbackChaining = true;
                           this.formValidator.revalidateField('email');
@@ -107,16 +140,47 @@ const RegistrationFormView = FormView.extend({
                           this.disableCallbackChaining = false;
                         }
 
-                        if (input == ''
+                        if (value == ''
                           && this.el.querySelector('#email').value == ''
                           && this.el.querySelector('#primary_phone').value == '') {
 
-                          return false;
+                          return {
+                            valid: false,
+                            message: 'Please include atleast 1 contact information.'
+                          };
                         }
 
-                        return true;
-                      },
-                      message: 'Please include atleast 1 contact information.'
+                        if (IEversion < 10) {
+                          if (value !== '') {
+                            if (value.match(/\d{3}-?\d{3}-?\d{4}/) && value.match(/\d{3}-?\d{3}-?\d{4}/)[0] == value) {
+                              $field.val(value.replace(/(\d{3})-?(\d{3})-?(\d{4})/, '$1-$2-$3'));
+                              return {
+                                valid: true
+                              };
+                            } else {
+                              return {
+                                valid: false,
+                                message: 'This field must be a valid phone number.'
+                              };
+                            }
+                          } else {
+                            return {
+                              valid: true
+                            };
+                          }
+                        } else {
+                          if (value === '' || $field.intlTelInput('isValidNumber')) {
+                            return {
+                              valid: true
+                            };
+                          } else {
+                            return {
+                              valid: false,
+                              message: 'This field must be a valid phone number.'
+                            };
+                          }
+                        }
+                      }
                     }
                   },
                 }
