@@ -1,4 +1,4 @@
-/* global IEversion BaseView FormView */
+/* global doAjax IEversion BaseView FormView */
 
 const RegistrationFormView = FormView.extend({
   className: 'registrationForm',
@@ -34,7 +34,7 @@ const RegistrationFormView = FormView.extend({
               fields: [
                 {
                   title: 'Email',
-                  type: 'email',
+                  type: 'text',
                   bindTo: 'email',
                   id: 'email',
 
@@ -59,7 +59,11 @@ const RegistrationFormView = FormView.extend({
                       },
                       message: 'Please include atleast 1 contact information.'
                     },
-                    emailAddress: {
+                    // emailAddress: {
+                    //   message: 'The value is not a valid email address'
+                    // },
+                    regexp: {
+                      regexp: new RegExp("^(([^<>()\\[\\]\\\\.,:;\\s@\"]+(\\.[^<>()\\[\\]\\\\.,:;\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"),
                       message: 'The value is not a valid email address'
                     }
                   },
@@ -315,7 +319,8 @@ const RegistrationFormView = FormView.extend({
                   type: 'dropdown',
                   bindTo: 'lockers_choice_1',
                   id: 'lockers_choice_1',
-                  choices: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */',
+                  // choices: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */',
+                  choices: this.lockerChoices,
                   required: true,
 
                   validators: {
@@ -354,7 +359,8 @@ const RegistrationFormView = FormView.extend({
                   type: 'dropdown',
                   bindTo: 'lockers_choice_2',
                   id: 'lockers_choice_2',
-                  choices: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */',
+                  // choices: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */',
+                  choices: this.lockerChoices,
 
                   validators: {
                     callback: {
@@ -391,7 +397,8 @@ const RegistrationFormView = FormView.extend({
                   type: 'dropdown',
                   bindTo: 'lockers_choice_3',
                   id: 'lockers_choice_3',
-                  choices: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */',
+                  // choices: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */',
+                  choices: this.lockerChoices,
 
                   validators: {
                     callback: {
@@ -445,7 +452,8 @@ const RegistrationFormView = FormView.extend({
                   type: 'dropdown',
                   bindTo: 'stations_choice_1',
                   id: 'stations_choice_1',
-                  choices: '/* @echo C3DATAMEDIA_STATION_CHOICES */',
+                  // choices: '/* @echo C3DATAMEDIA_STATION_CHOICES */',
+                  choices: this.stationChoices,
                   required: true,
 
                   validators: {
@@ -484,7 +492,8 @@ const RegistrationFormView = FormView.extend({
                   type: 'dropdown',
                   bindTo: 'stations_choice_2',
                   id: 'stations_choice_2',
-                  choices: '/* @echo C3DATAMEDIA_STATION_CHOICES */',
+                  // choices: '/* @echo C3DATAMEDIA_STATION_CHOICES */',
+                  choices: this.stationChoices,
 
                   validators: {
                     callback: {
@@ -521,7 +530,8 @@ const RegistrationFormView = FormView.extend({
                   type: 'dropdown',
                   bindTo: 'stations_choice_3',
                   id: 'stations_choice_3',
-                  choices: '/* @echo C3DATAMEDIA_STATION_CHOICES */',
+                  // choices: '/* @echo C3DATAMEDIA_STATION_CHOICES */',
+                  choices: this.stationChoices,
 
                   validators: {
                     callback: {
@@ -646,15 +656,20 @@ const RegistrationFormView = FormView.extend({
   },
 
   render() {
-    return FormView.prototype.render.call(this)
-      .then(() => {
-        const buttonsElement = document.createElement('p');
-        buttonsElement.innerHTML = `
-          <button class="btn btn-primary btn-lg">Register</button>
-        `
-
-        this.form.appendChild(buttonsElement);
-      });
+    this.lockerChoices = [];
+    this.stationChoices = [];
+    return Promise.all([
+      doAjax({ url: '/* @echo C3DATAMEDIA_LOCKER_CHOICES */' })
+        .then(({ data }) => this.lockerChoices = data),
+      doAjax({ url: '/* @echo C3DATAMEDIA_STATION_CHOICES */' })
+        .then(({ data }) => this.stationChoices = data)
+    ]).then(() => {
+      return FormView.prototype.render.call(this)
+        .then(() => {
+          const buttonsElement = this.form.appendChild(document.createElement('p'));
+          buttonsElement.innerHTML = '<button class="btn btn-primary btn-lg">Register</button>';
+        });
+    });
   }
 });
 
@@ -673,6 +688,7 @@ const RegistrationPageView = BaseView.extend({
     this.listenTo(this.subViews.formView, 'success', () => {
       this.trigger('success');
     });
+
     const renderPromise = this.subViews.formView.appendTo(fragment).render();
 
     this.el.appendChild(fragment);
