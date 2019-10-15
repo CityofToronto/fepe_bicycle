@@ -4,8 +4,8 @@
     "value": "371 Bloor Street West"
   },
   {
-    "text": "Bayview Station",
-    "value": "Bayview Station"
+    "text": "Bayview Subway Station",
+    "value": "Bayview Subway Station"
   },
   {
     "text": "City Hall",
@@ -40,8 +40,8 @@
     "value": "Guildwood GO Station"
   },
   {
-    "text": "Kennedy Station",
-    "value": "Kennedy Station"
+    "text": "Kennedy Subway Station",
+    "value": "Kennedy Subway Station"
   },
   {
     "text": "Long Branch GO Station",
@@ -76,7 +76,7 @@
     "value": "Sheppard West Subway Station"
   },
   {
-    "text": "Yorkdale Subway",
-    "value": "Yorkdale Subway"
+    "text": "Yorkdale Subway Station",
+    "value": "Yorkdale Subway Station"
   }
 ]
