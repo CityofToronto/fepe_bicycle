@@ -67,14 +67,14 @@
     "Run": "gulp run",
     "Deploy_SIT": "gulp deploy:dev",
     "Deploy_QA": "gulp deploy:qa",
-    "C3Config_Maserati": "gulp c3api_config --requestOptions MASERATI",
-    "C3Data_Maserati": "gulp c3api_dataaccess --requestOptions MASERATI",
-    "C3DataMedia_Maserati": "gulp c3api_dataaccess_media --requestOptions MASERATI",
-    "C3Config_SIT": "gulp c3api_config --requestOptions SIT",
-    "C3Data_SIT": "gulp c3api_dataaccess --requestOptions SIT",
-    "C3DataMedia_SIT": "gulp c3api_dataaccess_media --requestOptions SIT",
-    "C3Config_QA": "gulp c3api_config --requestOptions QA",
-    "C3Data_QA": "gulp c3api_dataaccess --requestOptions QA",
-    "C3DataMedia_QA": "gulp c3api_dataaccess_media --requestOptions QA"
+    "C3Config_Maserati": "gulp c3api_config --requestOptions MASERATI --deleteEntity false",
+    "C3Data_Maserati": "gulp c3api_dataaccess --requestOptions MASERATI --deleteEntity false",
+    "C3DataMedia_Maserati": "gulp c3api_dataaccess_media --requestOptions MASERATI --deleteEntity false",
+    "C3Config_SIT": "gulp c3api_config --requestOptions SIT --deleteEntity false",
+    "C3Data_SIT": "gulp c3api_dataaccess --requestOptions SIT --deleteEntity false",
+    "C3DataMedia_SIT": "gulp c3api_dataaccess_media --requestOptions SIT --deleteEntity false",
+    "C3Config_QA": "gulp c3api_config --requestOptions QA --deleteEntity false",
+    "C3Data_QA": "gulp c3api_dataaccess --requestOptions QA --deleteEntity false",
+    "C3DataMedia_QA": "gulp c3api_dataaccess_media --requestOptions QA --deleteEntity false"
   }
 }
